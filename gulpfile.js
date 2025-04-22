@@ -1,5 +1,4 @@
 const gulp = require("gulp");
-const runSequence = require("run-sequence");
 
 global.watch = [];
 global.build = [];
@@ -13,12 +12,9 @@ require("./assets/gulp/sass.js")
 require("./assets/gulp/styleguide.js")
 require("./assets/gulp/browserSync.js")
 
+// Gulp 4 構文に対応
+gulp.task("watch", gulp.parallel(global.watch))
 
-gulp.task("watch",global.watch)
+gulp.task("build", gulp.series(...global.build))
 
-gulp.task("build",(cb)=>{
-    global.build.push(cb)
-    runSequence.apply(this,global.build)
-})
-
-gulp.task("default",["watch"])
+gulp.task("default", gulp.series("watch"))
