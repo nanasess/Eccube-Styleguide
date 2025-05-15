@@ -96,3 +96,20 @@ $ npm run dev
 ```
 $ npm run build:moc
 ```
+
+## 環境変数による設定
+
+### appRoot の設定
+
+スタイルガイドをビルドする際、JavaScriptやCSSなどのリソースのパスに接頭辞を付けたい場合は、環境変数 `APP_ROOT` を使用できます。
+これは特にサブディレクトリにデプロイする場合に便利です。
+
+例えば、`/styleguide/` というパスにデプロイする場合：
+
+```
+$ APP_ROOT=/styleguide/ npm run build:styleguide:generate
+```
+
+`APP_ROOT` が指定されない場合、デフォルト値は空文字 (`''`) となります。
+
+GitHub Actions でのデプロイ時にも `APP_ROOT=/Eccube-Styleguide` が設定されており、GitHub Pages 上では適切なパスでリソースが読み込まれます。

@@ -4,6 +4,9 @@ var gulp = require('gulp');
 var styleguide = require('nanasess-sc5-styleguide');
 var outputPath = 'public';
 
+// appRoot の環境変数を取得、指定がなければデフォルトで空文字を設定
+var appRoot = process.env.APP_ROOT || '';
+
 const {src,dest,scss_option} = global;
 
 const target = src+'assets/scss/**/*.scss';
@@ -12,6 +15,7 @@ const styelguideConfig = {
     title: 'My Styleguide',
     rootPath: outputPath,
     overviewPath: './assets/styleguide.md',
+    appRoot: appRoot, // appRoot の設定を追加
     extraHead: [
         '<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">',
         '<link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.3.1/css/all.css" integrity="sha384-mzrmE5qonljUremFsqc01SB46JvROS7bZs3IO2EmfFsd15uHvIt+Y8vEf7N7fWAU" crossorigin="anonymous">',

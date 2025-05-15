@@ -41,7 +41,7 @@ jobs:
         run: npm ci
 
       - name: Build styleguide
-        run: npm run build:styleguide
+        run: APP_ROOT=/Eccube-Styleguide npm run build:styleguide
 
       - name: Setup Pages
         uses: actions/configure-pages@v5
