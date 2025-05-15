@@ -1,11 +1,8 @@
 "use strict"
 
 var gulp = require('gulp');
-var styleguide = require('sc5-styleguide');
-var sass = require('gulp-sass');
+var styleguide = require('nanasess-sc5-styleguide');
 var outputPath = 'public';
-const runSequence = require("run-sequence");
-
 
 const {src,dest,scss_option} = global;
 
@@ -29,8 +26,6 @@ const styelguideConfig = {
     enablePug: true
 }
 
-
-
 // サーバを生成するタスク : ウォッチ機能も付く
 gulp.task('styleguide:generate', function() {
     styelguideConfig.server = true;
@@ -47,9 +42,10 @@ gulp.task('styleguide:generateOnly', function() {
         .pipe(gulp.dest(outputPath));
 });
 
-
 gulp.task('styleguide:applystyles', function() {
-    const plumber = require("gulp-plumber")
+    const plumber = require("gulp-plumber");
+    const sass = require('gulp-sass')(require('sass'));
+    
     return gulp.src(target)
         .pipe(plumber())
         .pipe(sass({
@@ -59,22 +55,25 @@ gulp.task('styleguide:applystyles', function() {
         .pipe(gulp.dest(outputPath));
 });
 
-// // スタイルガイドに必要な画像を移動させる
+// スタイルガイドに必要な画像を移動させる
 // gulp.task('styleguide:image', function(){
 //     return gulp.src(dest+'/image/**/*.png')
 //         .pipe(gulp.dest("./styleguide/image"));
 // });
 
-gulp.task('styleguide:build', ()=>{
-    runSequence(
-        "styleguide:generateOnly",
-        "styleguide:applystyles"
-    );
-});
+gulp.task('styleguide:build', gulp.series(
+    "styleguide:generateOnly",
+    "styleguide:applystyles"
+));
 
-gulp.task('styleguide:server', ['styleguide:dev'],()=>{
-    gulp.watch(target,["styleguide:dev"])
-});
-gulp.task('styleguide:dev', ['styleguide:applystyles','styleguide:generate']);
+gulp.task('styleguide:dev', gulp.parallel(
+    'styleguide:applystyles',
+    'styleguide:generate'
+));
 
-gulp.task('styleguide', ['styleguide:build']);
+gulp.task('styleguide:server', gulp.series('styleguide:dev', (done) => {
+    gulp.watch(target, gulp.series("styleguide:dev"));
+    done();
+}));
+
+gulp.task('styleguide', gulp.series('styleguide:build'));

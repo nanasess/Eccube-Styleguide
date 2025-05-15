@@ -2,12 +2,14 @@
 
 const gulp = require("gulp");
 const $ = require("gulp-load-plugins")();
-const runSequence = require("run-sequence");
+const sassCompiler = require('sass');
+const gulpSass = require('gulp-sass');
+const sass = gulpSass(sassCompiler);
 
 const {src,dest,scss_option} = global;
 
-gulp.task("sass",()=> {
-    let options = (scss_option)?scss_option:{
+gulp.task("sass", ()=> {
+    let options = (scss_option) ? scss_option : {
         sourceMap: true,
     };
 
@@ -20,9 +22,9 @@ gulp.task("sass",()=> {
             errorHandler: $.notify.onError('<%= error.message %>')
         }))
         .pipe($.sourcemaps.init())
-        .pipe($.sass(options))
+        .pipe(sass(options).on('error', sass.logError))
         .pipe($.pleeease({
-            autoprefixer:true,
+            autoprefixer: true,
             minifier: true,
             mqpacker: true
         }))
@@ -30,15 +32,13 @@ gulp.task("sass",()=> {
         .pipe(gulp.dest(`${dest}assets/css/`));
 });
 
-gulp.task("sass:watch",()=>{
+gulp.task("sass:watch", (done) => {
     let target = [
         `${src}assets/scss/**/*.scss`,
     ];
-    return gulp.watch(target,["sass"])
-    // return gulp.watch(target,()=>{
-    //     runSequence("sass","server:reload")
-    // })
+    gulp.watch(target, gulp.series("sass"));
+    done();
 });
 
-global.watch.push("sass:watch")
-global.build.push("sass")
+global.watch.push("sass:watch");
+global.build.push("sass");

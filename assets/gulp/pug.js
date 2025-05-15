@@ -2,13 +2,12 @@
 
 const gulp = require("gulp");
 const $ = require("gulp-load-plugins")();
-const runSequence = require("run-sequence");
 
 const {src,dest,jade_option} = global;
 
-gulp.task("pug",() => {
-    let options = (jade_option)?jade_option:{
-        locals:{},
+gulp.task("pug", () => {
+    let options = (jade_option) ? jade_option : {
+        locals: {},
         pretty: true,
         basedir: process.cwd(),
         doctype: "html"
@@ -26,14 +25,13 @@ gulp.task("pug",() => {
         .pipe(gulp.dest(`${dest}/`));
 });
 
-gulp.task("pug:watch",()=>{
+gulp.task("pug:watch", (done) => {
     let target = [
         `${src}assets/tmpl/**/*`,
     ];
-    return gulp.watch(target,()=>{
-        runSequence("pug","server:reload")
-    })
+    gulp.watch(target, gulp.series("pug", "server:reload"));
+    done();
 });
 
 // global.watch.push("pug:watch")
-global.build.push("pug")
+global.build.push("pug");

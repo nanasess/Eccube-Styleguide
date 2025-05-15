@@ -7,15 +7,13 @@ const browserSync = require("browser-sync");
 
 const {src,dest} = global;
 
-const fs = require("fs")
-const path = require("path")
-const url = require("url")
-const pug = require("pug")
+const fs = require("fs");
+const path = require("path");
+const pug = require("pug");
 
 const pugMiddleWare = (req, res, next) => {
-
     const basedir = process.cwd();
-    const requestPath = getPugTemplatePath(basedir,req)
+    const requestPath = getPugTemplatePath(basedir, req);
 
     if (
         !requestPath ||
@@ -25,9 +23,9 @@ const pugMiddleWare = (req, res, next) => {
     }
     const pugPath = requestPath.replace('.html', '.pug');
 
-    try{
-        console.log("[BS] try to file "+ pugPath)
-        fs.statSync(pugPath)
+    try {
+        console.log("[BS] try to file "+ pugPath);
+        fs.statSync(pugPath);
         const content = pug.renderFile(pugPath, {
             locals:{},
             pretty: true,
@@ -35,60 +33,50 @@ const pugMiddleWare = (req, res, next) => {
             compileDebug: true,
             doctype: "html"
         });
-        res.end(new Buffer(content));
-    }catch (e){
-        console.log(e)
+        res.end(Buffer.from(content));
+    } catch (e) {
+        console.log(e);
         return next();
     }
 }
 
-const getPugTemplatePath = (baseDir,req)=>{
-    const requestPath = url.parse(req.url).pathname;
-    if(requestPath.substr(0,4) !== "/moc"){
+const getPugTemplatePath = (baseDir, req) => {
+    // url.parse is deprecated in newer Node versions, use new URL() instead for Node 22
+    const parsedUrl = new URL(req.url, 'http://localhost');
+    const requestPath = parsedUrl.pathname;
+    
+    if (requestPath.substr(0, 4) !== "/moc") {
         return null;
     }
-    const suffix = path.parse(requestPath).ext ? "": "index.html"
-    return path.join(baseDir,"assets/tmpl",requestPath,suffix);
+    const suffix = path.parse(requestPath).ext ? "": "index.html";
+    return path.join(baseDir, "assets/tmpl", requestPath, suffix);
 }
 
-
-gulp.task("server",()=> {
-
-    // var config = {
-    //     proxy: "127.0.0.1:8000",
-    //     open: "external",
-    //     //notify: false
-    // };
-    //
-    // var server = {
-    //     base: `${dest}`,
-    // }
-    //
-    // php.server(server,() => {
-    //     browserSync(config)
-    // });
-
+gulp.task("server", (done) => {
     browserSync({
-        server:{
+        server: {
             middleware: [pugMiddleWare],
-            baseDir:"public",
+            baseDir: "public",
             index: "index.html",
         },
         open: "external",
-    })
-    return gulp.watch([
+    });
+    
+    gulp.watch([
         `${dest}/**/*`,
         `${src}/assets/tmpl/**/*`
-    ], (e) => {
-        // console.log(e)
-        setTimeout(function(){
+    ], (done) => {
+        setTimeout(function() {
             browserSync.reload();
-        },500);
+            done();
+        }, 500);
     });
+    done();
 });
 
-gulp.task("server:reload",()=>{
+gulp.task("server:reload", (done) => {
     browserSync.reload();
-})
+    done();
+});
 
-global.watch.push("server")
+global.watch.push("server");
