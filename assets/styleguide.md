@@ -1,19 +1,14 @@
 # EC-CUBE 4 Style Guide
 
-[See Moc Page](/moc)
-
+<!-- [See Moc Page](/moc) -->
 
 EC-CUBE4デモサイト
 
-[http://demo4.ec-cube.net/](http://demo4.ec-cube.net/)
+[https://www.ec-cube.net/demo/](https://www.ec-cube.net/demo/)
 
 開発リポジトリ　
 
 [https://github.com/EC-CUBE/Eccube-Styleguide](https://github.com/EC-CUBE/Eccube-Styleguide)
-
-Styleguide On Heorku 
-
-[http://eccube3-styleguide.herokuapp.com/](http://eccube3-styleguide.herokuapp.com/)
 
 
 ## コンポーネント設計について
