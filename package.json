@@ -52,6 +52,8 @@
     "glob-parent": "^5.1.2",
     "event-stream": "^4.0.1",
     "flatmap-stream": "^0.0.1-security",
-    "node-sass": "npm:sass@^1.69.5"
+    "node-sass": "npm:sass@^1.69.5",
+    "deep-extend": "^0.6.0",
+    "lodash": "^4.17.21"
   }
 }
