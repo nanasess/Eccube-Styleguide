@@ -1,7 +1,5 @@
 # EC-CUBE 4 Style Guide
 
-<!-- [See Moc Page](/moc) -->
-
 EC-CUBE4デモサイト
 
 [https://www.ec-cube.net/demo/](https://www.ec-cube.net/demo/)
@@ -10,6 +8,16 @@ EC-CUBE4デモサイト
 
 [https://github.com/EC-CUBE/Eccube-Styleguide](https://github.com/EC-CUBE/Eccube-Styleguide)
 
+
+Styleguide
+
+[https://doc.ec-cube.net/Eccube-Styleguide/](https://doc.ec-cube.net/Eccube-Styleguide/)
+
+<!--
+HTML Moc
+
+[https://doc.ec-cube.net/Eccube-Styleguide/moc/](https://doc.ec-cube.net/Eccube-Styleguide/moc/)
+-->
 
 ## コンポーネント設計について
 
